@@ -1,0 +1,35 @@
+name: Java CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "master" ] # Trigger on master branch
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # STAGE 1: CHECKOUT
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # STAGE 2: BUILD
+      - name: Build with Maven
+        run: mvn -B clean compile -DskipTests
+
+      # STAGE 3: TEST
+      - name: Run unit tests
+        run: mvn -B test
+
+      # STAGE 4: DEPLOY (Placeholder)
+      # This step depends on where you are deploying (e.g., AWS, Azure, or Heroku)
+      - name: Deploy to Production
+        run: echo "Deploying application..." 
+        # Example for GitHub Packages: run: mvn -B deploy
